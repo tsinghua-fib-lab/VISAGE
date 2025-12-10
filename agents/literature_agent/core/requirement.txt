@@ -1,0 +1,4 @@
+requests>=2.25.1
+arxiv>=2.1.0
+semanticscholar>=0.7.0
+scholarly>=1.7.2

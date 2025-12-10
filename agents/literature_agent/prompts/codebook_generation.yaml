@@ -1,0 +1,286 @@
+# VISAGE Codebook Generation Prompts
+# For Coder Agent - Consolidating Cues into Machine-Readable Codebooks
+# Based on core workflow specification
+
+version: "1.0"
+description: "Prompt templates for generating structured visual codebooks following exact workflow specification"
+
+prompts:
+  system_prompt:
+    name: "codebook_consolidator_system"
+    description: "Core system identity for Coder Agent"
+    template: |
+      You consolidate extracted cues into two machine-readable codebooks for VISAGE (street-view and 
+      remote-sensing). Normalize terminology, merge near-duplicates, map to a fixed category vocabulary, 
+      finalize modality, and compute direction consensus. Add a remote-sensing "visual manifestation" 
+      field.
+
+  input_specification:
+    name: "input_specification"
+    description: "Input specification from workflow"
+    template: |
+      INPUT: extracted_cues.json from the Extractor.
+
+  families_vocabulary:
+    name: "families_fixed_vocabulary"
+    description: "Fixed category vocabulary from workflow specification"
+    template: |
+      FAMILIES (fixed vocabulary):
+      access_permeability, housing_diversity_type, commercial_frontage, maintenance_vacancy,
+      greenery_shade, road_structure, barriers_boundaries, public_space, transport_hubs, land_use_mix
+
+  modality_rubric:
+    name: "modality_rubric_exact"
+    description: "Exact modality rubric from workflow specification"
+    template: |
+      MODALITY RUBRIC:
+      - Street-view: façade/storefront/signage, sidewalk/crosswalk, street furniture, bus stop/shelter,
+      window/door condition, murals/graffiti, fence transparency/height, tree trunks/lines.
+      - Remote-sensing: roof form/color, parcel/lot boundaries, block pattern, cul-de-sacs,
+      interchanges/overpasses, parking lot extents, housing footprints/density, canopy polygons,
+      large open fields/squares.
+      - Both: parks/open spaces; mixed-use frontage vs block-level commercial zones; greenery
+      (trunks vs canopy); barriers (walls vs perimeter continuity).
+
+  processing_steps:
+    name: "processing_steps_exact"
+    description: "Exact processing steps from workflow specification"
+    template: |
+      STEPS:
+      1) Normalize names (case/number/spelling). Merge near-duplicates (string similarity ≥ 0.90); keep 
+      Sources list.
+      2) Map each cue to one Family from the fixed vocabulary.
+      3) Finalize ImageryPerspective = street_view | remote_sensing | both (resolve "unclear" where 
+      possible).
+      4) DirectionConsensus = "+" (increase segregation) | "-" (decrease) | "?" (ambiguous), using 
+      confidence-weighted voting (high=1.0, medium=0.7, low=0.4). Unresolved contradictions → conflicts[].
+      5) Compose concise Definition (≤ 25 words) and DetectionHints (≤ 20 words).
+      6) For remote-sensing entries, add VisualManifestationRS (≤ 20 words) describing overhead appearance.
+
+  output_contract:
+    name: "output_contract_strict"
+    description: "Strict output contract following exact specification"
+    template: |
+      OUTPUT CONTRACT (RETURN ONE JSON OBJECT; NO EXTRA KEYS):
+      {
+      "street_view_codebook":[
+      {
+      "Name":"string",
+      "Category":"access_permeability|housing_diversity_type|commercial_frontage|maintenance_vacancy|greenery_shade|road_structure|barriers_boundaries|public_space|transport_hubs|land_use_mix",
+      "ImageryPerspective":"street_view|both",
+      "Definition":"string", // <= 25 words
+      "DetectionHints":"string", // <= 20 words
+      "DirectionConsensus":"+|-|?",
+      "Confidence":"high|medium|low",
+      "Sources":["string"] // paper_ids
+      }
+      ],
+      "remote_sensing_codebook":[
+      {
+      "Name":"string",
+      "Category":"access_permeability|housing_diversity_type|commercial_frontage|maintenance_vacancy|greenery_shade|road_structure|barriers_boundaries|public_space|transport_hubs|land_use_mix",
+      "ImageryPerspective":"remote_sensing|both",
+      "Definition":"string", // <= 25 words
+      "DetectionHints":"string", // <= 20 words
+      "VisualManifestationRS":"string",// <= 20 words
+      "DirectionConsensus":"+|-|?",
+      "Confidence":"high|medium|low",
+      "Sources":["string"]
+      }
+      ],
+      "conflicts":[
+      {"Cue":"string","Issue":"string","Sources":["string"]}
+      ]
+      }
+
+  validation_rules:
+    name: "validation_rules_strict"
+    description: "Strict validation rules from workflow specification"
+    template: |
+      VALIDATION:
+      - Return JSON only (no prose).
+      - If any schema is violated, output exactly: SCHEMA_VIOLATION
+
+  name_normalization:
+    name: "name_normalization_guidelines"
+    description: "Guidelines for normalizing cue names"
+    template: |
+      NAME NORMALIZATION GUIDELINES:
+      
+      CASE: Convert to consistent casing (Title Case)
+      NUMBER: Standardize plural/singular forms
+      SPELLING: Fix common variations (e.g., "heigth" → "height")
+      TERMINOLOGY: Standardize terms (e.g., "fencing" → "fence")
+      
+      MERGING: Combine cues with string similarity ≥ 0.90
+      - Preserve all source paper IDs in Sources list
+      - Resolve naming conflicts by choosing most descriptive term
+
+  perspective_resolution:
+    name: "perspective_resolution_guidelines"
+    description: "Guidelines for finalizing imagery perspectives"
+    template: |
+      PERSPECTIVE RESOLUTION GUIDELINES:
+      
+      RESOLVE "unclear" perspectives using modality rubric:
+      - Street-view features: Facades, signage, sidewalks, street-level details
+      - Remote-sensing features: Patterns, footprints, layouts, overhead views
+      - Both: Features visible in both perspectives
+      
+      ASSIGNMENT RULES:
+      - street_view_codebook: Only "street_view" or "both" perspectives
+      - remote_sensing_codebook: Only "remote_sensing" or "both" perspectives
+
+  direction_consensus:
+    name: "direction_consensus_calculation"
+    description: "Confidence-weighted voting for direction consensus"
+    template: |
+      DIRECTION CONSENSUS CALCULATION:
+      
+      CONFIDENCE WEIGHTS:
+      - high confidence: 1.0
+      - medium confidence: 0.7
+      - low confidence: 0.4
+      
+      CALCULATION:
+      1. For each direction (increase/decrease), sum confidence weights from all sources
+      2. Compare weighted sums:
+         - If increase_sum > decrease_sum: Consensus = "+"
+         - If decrease_sum > increase_sum: Consensus = "-"
+         - If difference < threshold or weights equal: Consensus = "?"
+      
+      CONFLICT HANDLING:
+      - Equal weights with opposite directions → "?" (ambiguous)
+      - Record unresolved contradictions in conflicts list
+      - Include conflicting sources and specific issue description
+
+  content_generation:
+    name: "content_generation_guidelines"
+    description: "Guidelines for generating definitions and detection hints"
+    template: |
+      CONTENT GENERATION GUIDELINES:
+      
+      DEFINITION (≤25 words):
+      - Start with core concept
+      - Include key distinguishing characteristics
+      - Focus on visual observability
+      - Use clear, concise language
+      
+      DETECTION HINTS (≤20 words):
+      - Practical guidance for identification
+      - Focus on distinctive visual features
+      - Suggest what to look for in imagery
+      - Include common patterns or arrangements
+      
+      VISUAL MANIFESTATION RS (≤20 words, remote-sensing only):
+      - Describe overhead appearance characteristics
+      - Focus on patterns, shapes, colors visible from above
+      - Include spatial relationships and textures
+
+variables:
+  families:
+    - "access_permeability"
+    - "housing_diversity_type"
+    - "commercial_frontage"
+    - "maintenance_vacancy"
+    - "greenery_shade"
+    - "road_structure"
+    - "barriers_boundaries"
+    - "public_space"
+    - "transport_hubs"
+    - "land_use_mix"
+
+  modality_rubric:
+    street_view:
+      - "façade/storefront/signage"
+      - "sidewalk/crosswalk"
+      - "street furniture"
+      - "bus stop/shelter"
+      - "window/door condition"
+      - "murals/graffiti"
+      - "fence transparency/height"
+      - "tree trunks/lines"
+    
+    remote_sensing:
+      - "roof form/color"
+      - "parcel/lot boundaries"
+      - "block pattern"
+      - "cul-de-sacs"
+      - "interchanges/overpasses"
+      - "parking lot extents"
+      - "housing footprints/density"
+      - "canopy polygons"
+      - "large open fields/squares"
+    
+    both:
+      - "parks/open spaces"
+      - "mixed-use frontage vs block-level commercial zones"
+      - "greenery (trunks vs canopy)"
+      - "barriers (walls vs perimeter continuity)"
+
+  processing:
+    similarity_threshold: 0.90
+    confidence_weights:
+      high: 1.0
+      medium: 0.7
+      low: 0.4
+    word_limits:
+      definition: 25
+      detection_hints: 20
+      visual_manifestation_rs: 20
+
+  output_schema:
+    street_view_codebook:
+      required_fields:
+        - "Name"
+        - "Category"
+        - "ImageryPerspective"
+        - "Definition"
+        - "DetectionHints"
+        - "DirectionConsensus"
+        - "Confidence"
+        - "Sources"
+      perspective_constraints: ["street_view", "both"]
+    
+    remote_sensing_codebook:
+      required_fields:
+        - "Name"
+        - "Category"
+        - "ImageryPerspective"
+        - "Definition"
+        - "DetectionHints"
+        - "VisualManifestationRS"
+        - "DirectionConsensus"
+        - "Confidence"
+        - "Sources"
+      perspective_constraints: ["remote_sensing", "both"]
+    
+    conflicts:
+      required_fields:
+        - "Cue"
+        - "Issue"
+        - "Sources"
+    
+    constraints:
+      - "NO_EXTRA_KEYS"
+      - "RETURN_ONE_JSON_OBJECT"
+
+  validation:
+    error_response: "SCHEMA_VIOLATION"
+    constraints:
+      - "RETURN_JSON_ONLY"
+      - "NO_PROSE"
+      - "STRICT_SCHEMA_COMPLIANCE"
+
+workflow_steps:
+  1: "system_initialization"
+  2: "input_processing"
+  3: "name_normalization"
+  4: "cue_merging"
+  5: "category_mapping"
+  6: "perspective_finalization"
+  7: "direction_consensus_calculation"
+  8: "content_generation"
+  9: "conflict_detection"
+  10: "output_generation"
+  11: "validation_check"

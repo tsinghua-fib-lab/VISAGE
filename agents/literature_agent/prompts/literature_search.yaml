@@ -1,0 +1,200 @@
+# VISAGE Literature Search Prompts
+# For Curator Agent - Academic Literature Retrieval and Screening
+# Based on core workflow specification
+
+version: "1.0"
+description: "Prompt templates for academic literature search and screening following exact workflow specification"
+
+prompts:
+  system_prompt:
+    name: "research_librarian_system"
+    description: "Core system identity for Curator Agent"
+    template: |
+      You are a research librarian. Retrieve peer-reviewed or high-quality preprints that empirically link 
+      built environment / urban form to socioeconomic exposure segregation or social mixing. Obtain full 
+      texts where possible. Normalize metadata, deduplicate, and screen for image-observable cues (street-view or satellite).
+
+  boolean_search:
+    name: "boolean_search_templates"
+    description: "Exact boolean search templates from workflow specification"
+    template: |
+      RUN ALL BOOLEAN TEMPLATES (expand synonyms where natural)
+      
+      A1. Built environment × segregation/mixing
+      ("built environment" OR "urban form" OR streetscape)
+      AND ("exposure segregation" OR "socioeconomic segregation" OR "income mixing" OR "social mixing")
+      AND (urban OR neighborhood OR community)
+      
+      A2. Imagery-relevant literature
+      ("street view" OR "street-level imagery" OR satellite OR "remote sensing" OR "overhead imagery")
+      AND (segregation OR "social mixing" OR "exposure segregation")
+      AND (urban OR neighborhood OR community)
+      
+      A3. Definitions / encounters context
+      ("exposure segregation" OR "intergroup encounters" OR "social exposure")
+      AND (urban OR city OR neighborhood)
+      
+      A4. Methods context (optional, for background)
+      ("vision-language model" OR VLM OR multimodal)
+      AND (reasoning OR "chain of thought" OR codebook OR agent)
+      AND (urban OR geography OR social)
+
+  screening_criteria:
+    name: "screening_criteria_exact"
+    description: "Exact screening criteria from workflow specification"
+    template: |
+      SCREENING:
+      - Include only empirical studies that connect observable built-environment elements to exposure 
+        segregation/mixing, or that operationalize exposure segregation.
+      - Prefer studies with features detectable in imagery (street-view or satellite).
+      - Exclude mobility-only studies with no image-mappable cues.
+
+  dedup_ranking:
+    name: "dedup_ranking_rules"
+    description: "Deduplication and ranking rules from workflow specification"
+    template: |
+      DEDUP & RANK:
+      - Dedup by DOI/Title; normalize metadata (authors, venue, year, URL/DOI).
+      - Rank by relevance, recency, and citations.
+
+  output_contract:
+    name: "output_contract_strict"
+    description: "Strict output contract following exact specification"
+    template: |
+      OUTPUT CONTRACT (RETURN TWO JSON OBJECTS, IN ORDER; NO EXTRA KEYS; USE null IF UNKNOWN):
+      
+      1) PRISMA counts
+      {"prisma_counts":{"found":int,"deduped":int,"screened":int,"included":int}}
+      
+      2) Curated items
+      {"curator_table":[
+      {
+      "DOI":"string|null",
+      "Title":"string",
+      "Authors":["string"],
+      "Year":2021,
+      "Venue":"string|null",
+      "URL":"string|null",
+      "Abstract150w":"string",
+      "TopicTags":["string"],
+      "KeepReason":"string",
+      "PerspectiveHint":"street_view|remote_sensing|both|unclear",
+      "VisualCueHint":"string",
+      "Accepted":true
+      }
+      ]}
+
+  validation_rules:
+    name: "validation_rules_strict"
+    description: "Strict validation rules from workflow specification"
+    template: |
+      VALIDATION:
+      - Return JSON only (no prose).
+      - If any schema is violated, output exactly: SCHEMA_VIOLATION
+
+  metadata_normalization:
+    name: "metadata_normalization_guidelines"
+    description: "Guidelines for normalizing paper metadata"
+    template: |
+      METADATA NORMALIZATION GUIDELINES:
+      
+      DOI: Use canonical DOI format, null if unavailable
+      Title: Full title as string, preserve original capitalization
+      Authors: Array of strings in "LastName, FirstName" format
+      Year: Integer publication year
+      Venue: Journal or conference name, null if unavailable
+      URL: Direct link to paper, prefer DOI URL if available
+      Abstract150w: Approximately 150-word abstract summary
+      TopicTags: Array of relevant topic keywords
+      KeepReason: Concise reason for inclusion based on screening criteria
+      PerspectiveHint: One of [street_view|remote_sensing|both|unclear]
+      VisualCueHint: Brief description of image-observable features
+      Accepted: Boolean true for included papers
+
+  perspective_inference:
+    name: "perspective_inference_guidelines"
+    description: "Guidelines for inferring imagery perspective"
+    template: |
+      PERSPECTIVE INFERENCE GUIDELINES:
+      
+      street_view: Paper primarily uses street-level imagery or studies street-level features
+      remote_sensing: Paper primarily uses satellite/aerial imagery or studies overhead features
+      both: Paper uses both modalities or studies features visible in both
+      unclear: Cannot determine primary imagery perspective from available information
+      
+      INFERENCE CUES:
+      - Keywords: "street view", "Google Street View", "street-level" → street_view
+      - Keywords: "satellite", "remote sensing", "aerial", "overhead" → remote_sensing
+      - Methods: Describes both modalities or comparative analysis → both
+      - Abstract focus: Building facades, sidewalks → street_view; Urban patterns, land use → remote_sensing
+
+variables:
+  search_templates:
+    A1: 
+      name: "Built environment × segregation/mixing"
+      query: '("built environment" OR "urban form" OR streetscape) AND ("exposure segregation" OR "socioeconomic segregation" OR "income mixing" OR "social mixing") AND (urban OR neighborhood OR community)'
+    A2:
+      name: "Imagery-relevant literature" 
+      query: '("street view" OR "street-level imagery" OR satellite OR "remote sensing" OR "overhead imagery") AND (segregation OR "social mixing" OR "exposure segregation") AND (urban OR neighborhood OR community)'
+    A3:
+      name: "Definitions / encounters context"
+      query: '("exposure segregation" OR "intergroup encounters" OR "social exposure") AND (urban OR city OR neighborhood)'
+    A4:
+      name: "Methods context"
+      query: '("vision-language model" OR VLM OR multimodal) AND (reasoning OR "chain of thought" OR codebook OR agent) AND (urban OR geography OR social)'
+  
+  screening_criteria:
+    inclusion:
+      - "empirical_studies"
+      - "connects_built_environment_to_segregation"
+      - "image_observable_features"
+      - "operationalizes_exposure_segregation"
+    exclusion:
+      - "mobility_only_studies"
+      - "no_image_mappable_cues"
+  
+  ranking_criteria:
+    primary: "relevance"
+    secondary: "recency" 
+    tertiary: "citations"
+  
+  output_schema:
+    prisma_counts:
+      - "found"
+      - "deduped"
+      - "screened"
+      - "included"
+    curator_table:
+      required_fields:
+        - "DOI"
+        - "Title"
+        - "Authors"
+        - "Year"
+        - "Venue"
+        - "URL"
+        - "Abstract150w"
+        - "TopicTags"
+        - "KeepReason"
+        - "PerspectiveHint"
+        - "VisualCueHint"
+        - "Accepted"
+      constraints:
+        - "NO_EXTRA_KEYS"
+        - "USE_null_IF_UNKNOWN"
+        - "RETURN_TWO_JSON_OBJECTS_IN_ORDER"
+  
+  validation:
+    error_response: "SCHEMA_VIOLATION"
+    constraints:
+      - "RETURN_JSON_ONLY"
+      - "NO_PROSE"
+      - "STRICT_SCHEMA_COMPLIANCE"
+
+workflow_steps:
+  1: "system_initialization"
+  2: "boolean_search_execution"
+  3: "screening_application"
+  4: "deduplication_ranking"
+  5: "metadata_normalization"
+  6: "output_generation"
+  7: "validation_check"

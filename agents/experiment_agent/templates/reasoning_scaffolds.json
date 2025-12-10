@@ -1,0 +1,260 @@
+{
+  "metadata": {
+    "file_name": "reasoning_scaffolds",
+    "version": "1.0",
+    "description": "Provides background knowledge and calculation rules for income segregation reasoning",
+    "created_date": "2025-11-10",
+    "last_updated": "2025-11-10"
+  },
+
+  "background_knowledge": {
+    "income_segregation_definition": {
+      "concept": "Income Segregation",
+      "definition": "Income segregation refers to the degree to which individuals with different income levels are spatially separated within a geographic area. One visible and consequential manifestation is socioeconomic segregation - the spatial and social separation of income groups that limits inter-class contact, entrenches mobility barriers, and distorts perceptions of inequality. Recent work has shifted attention to exposure segregation, the degree to which daily encounters cross income groups, moving beyond static, residence-based measures to the dynamics shaped by complex mobility patterns and heterogeneous urban form.",
+      "measurement_approach": "Measured by analyzing the proportion of different income groups among visitors to each Census Tract and calculating the deviation from an equal distribution. This captures exposure segregation based on daily mobility patterns rather than residential segregation.",
+      "key_distinction": "This analysis focuses on the income composition of people VISITING the Census Tract, not just those residing there, reflecting real-world exposure and interaction patterns."
+    },
+
+    "income_groups_definition": {
+      "definition_method": "Income groups are defined by ranking the search population's income within each city and dividing into four equal quartiles",
+      "low_income_p1": "Bottom 25% of income distribution among visitors to the city",
+      "lower_middle_income_p2": "25-50% of income distribution among visitors to the city",
+      "upper_middle_income_p3": "50-75% of income distribution among visitors to the city", 
+      "high_income_p4": "Top 25% of income distribution among visitors to the city",
+      "note": "These are relative rankings based on the income distribution of people visiting the area, reflecting exposure segregation patterns"
+    }
+  },
+
+  "calculation_rules": {
+    "segregation_index_formula": {
+      "formula": "S = (2/3) * Σ |p_i - 0.25|",
+      "variables": {
+        "S": "Exposure Segregation Index (ranges from 0 to 1)",
+        "p_i": "Proportion of visiting income group i in the tract (P1, P2, P3, P4)",
+        "0.25": "Expected proportion under perfect income distribution among visitors (4 equal groups)"
+      },
+      "calculation_steps": [
+        "Calculate absolute difference for each visitor group: |p_i - 0.25|",
+        "Sum all absolute differences: Σ |p_i - 0.25|", 
+        "Multiply by scaling factor: (2/3) * sum",
+        "Round result to 2 decimal places"
+      ],
+      "interpretation": {
+        "0.0-0.2": "Low exposure segregation - relatively equal income distribution among visitors",
+        "0.2-0.4": "Moderate exposure segregation - some income clustering among visitors", 
+        "0.4-0.6": "High exposure segregation - significant income separation among visitors",
+        "0.6-1.0": "Very high exposure segregation - extreme income concentration among visitors"
+      },
+      "context_note": "This measures how much daily encounters in this tract cross income boundaries, reflecting real-world social exposure patterns"
+    }
+  },
+
+  "reasoning_steps": {
+    "step_1_summary": {
+      "step_name": "Summary",
+      "description": "Provide overall context and objective of the analysis with emphasis on exposure segregation",
+      "required_content": [
+        "State the goal: estimating income exposure segregation level within the Census Tract",
+        "Mention data sources: street view and remote sensing images", 
+        "Explain the approach: analyzing visual elements to infer income composition of VISITORS",
+        "Reference the exposure segregation index calculation based on visitor patterns",
+        "Emphasize this measures daily encounters across income groups, not just residential patterns"
+      ],
+      "template_section": "### 1. **<Summary>**"
+    },
+
+    "step_2_caption": {
+      "step_name": "Caption", 
+      "description": "Analyze and describe visual elements from both image types to infer visitor income patterns",
+      "required_analysis": {
+        "remote_sensing_analysis": {
+          "image_count": "7 remote sensing images",
+          "elements_to_identify": {
+            "increase_segregation_elements": [
+              "MonofunctionalResidentialZones",
+              "VacantOrDemolitionSites", 
+              "GridOrRadialStreetPatterns",
+              "UniformHousingBlocks",
+              "RailwaysOrTrainTracks",
+              "ExpresswaysOrHighways"
+            ],
+            "decrease_segregation_elements": [
+              "LowDensityHousing",
+              "LargeFootprintBuildings",
+              "TallBuildings",
+              "CommercialActivityZones", 
+              "ParkingLots",
+              "ParksSquaresOrSportsFields",
+              "LargeOpenPublicSpaces",
+              "StreetTreesAndUrbanGreenStrips",
+              "ColorfulRoofsOrArchitecturalDiversity"
+            ]
+          },
+          "reporting_format": "For each element, report: 'X image(s) show ElementName'",
+          "interpretation_note": "These elements help infer the income composition of people who visit or are associated with this location"
+        },
+
+        "street_view_analysis": {
+          "elements_to_identify": {
+            "increase_segregation_elements": [
+              "DetachedSingleFamilyHouse",
+              "BungalowOrLowRiseHouse",
+              "HighFencesOrWalls",
+              "BarbedWireOrGatedEnclosures",
+              "VacantLotsOrAbandonedBuildings", 
+              "NoSidewalks",
+              "LargeEmptyLand",
+              "DeterioratedStreets",
+              "Graffiti",
+              "LitterOrTrashPiles",
+              "BoardedUpOrClosedShops",
+              "LackOfCommercialActivity",
+              "NarrowRoadsOrDeadEnds",
+              "MonofunctionalResidentialBlocks",
+              "SparseOrShortShrubs",
+              "IsolatedLawnsWithoutTrees", 
+              "RowHousesOrTownhouses"
+            ],
+            "decrease_segregation_elements": [
+              "ApartmentBuildingsOrHighRises",
+              "ParksPlaygroundsOrCommunitySquares",
+              "PublicFacilitiesBusStopsSchools",
+              "ParkingLots",
+              "WideMultiLaneRoads",
+              "CrosswalksOrOverpasses",
+              "Bridges",
+              "LandmarkBuildingsOrReligiousSites",
+              "TallTreesOrTreeLines",
+              "StreetTreesOrGreenBelts",
+              "CommunityGardens",
+              "ColorfulCleanFacadesOrWindows"
+            ]
+          },
+          "reporting_format": "For each element, report: 'X image(s) show ElementName'",
+          "interpretation_note": "Street-level features help estimate the income diversity of people visiting or passing through this area"
+        }
+      },
+      "income_estimation": {
+        "purpose": "Based on visual observations, estimate income group proportions of VISITORS to the tract",
+        "required_output": "Four proportions: P1, P2, P3, P4 that sum to 1.0",
+        "format": "Numerical values with 2 decimal places",
+        "context": "These proportions represent the estimated income distribution among people associated with this location through visits or daily activities"
+      },
+      "template_section": "### 2. **<Caption>**"
+    },
+
+    "step_3_calculation": {
+      "step_name": "Calculation",
+      "description": "Calculate exposure segregation index using the formula based on visitor income patterns",
+      "required_content": [
+        "State the exposure segregation formula: S = (2/3) * Σ |p_i - 0.25|",
+        "Show substitution with estimated visitor income values",
+        "Calculate intermediate values: |p_i - 0.25| for each visitor group",
+        "Show the final calculation steps",
+        "Present the exposure segregation score with 2 decimal places"
+      ],
+      "calculation_components": {
+        "q1": "|p1 - 0.25|",
+        "q2": "|p2 - 0.25|", 
+        "q3": "|p3 - 0.25|",
+        "q4": "|p4 - 0.25|",
+        "segregation_score": "(2/3) * (q1 + q2 + q3 + q4)"
+      },
+      "template_section": "### 3. **<Calculation>**"
+    },
+
+    "step_4_answer": {
+      "step_name": "Answer",
+      "description": "Present final results in structured format emphasizing visitor-based segregation",
+      "required_output": {
+        "income_proportions": [
+          "Low-Income (P1): X.XX",
+          "Lower-Middle-Income (P2): X.XX", 
+          "Upper-Middle-Income (P3): X.XX",
+          "High-Income (P4): X.XX"
+        ],
+        "segregation_index": "Income Exposure Segregation Index (S): X.XX"
+      },
+      "formatting_requirements": [
+        "Use OUTPUT: header",
+        "List income proportions with group labels",
+        "Show exposure segregation index with label",
+        "All values to 2 decimal places",
+        "Note: proportions represent estimated income distribution among visitors"
+      ],
+      "template_section": "### 4. **<Answer>**"
+    }
+  },
+
+  "visual_elements_reference": {
+    "remote_sensing": {
+      "increase_segregation_elements": [
+        "MonofunctionalResidentialZones",
+        "VacantOrDemolitionSites",
+        "GridOrRadialStreetPatterns", 
+        "UniformHousingBlocks",
+        "RailwaysOrTrainTracks",
+        "ExpresswaysOrHighways"
+      ],
+      "decrease_segregation_elements": [
+        "LowDensityHousing",
+        "LargeFootprintBuildings",
+        "TallBuildings",
+        "CommercialActivityZones",
+        "ParkingLots",
+        "ParksSquaresOrSportsFields",
+        "LargeOpenPublicSpaces",
+        "StreetTreesAndUrbanGreenStrips",
+        "ColorfulRoofsOrArchitecturalDiversity"
+      ]
+    },
+    "street_view": {
+      "increase_segregation_elements": [
+        "DetachedSingleFamilyHouse",
+        "BungalowOrLowRiseHouse",
+        "HighFencesOrWalls",
+        "BarbedWireOrGatedEnclosures",
+        "VacantLotsOrAbandonedBuildings",
+        "NoSidewalks",
+        "LargeEmptyLand",
+        "DeterioratedStreets",
+        "Graffiti",
+        "LitterOrTrashPiles",
+        "BoardedUpOrClosedShops", 
+        "LackOfCommercialActivity",
+        "NarrowRoadsOrDeadEnds",
+        "MonofunctionalResidentialBlocks",
+        "SparseOrShortShrubs",
+        "IsolatedLawnsWithoutTrees",
+        "RowHousesOrTownhouses"
+      ],
+      "decrease_segregation_elements": [
+        "ApartmentBuildingsOrHighRises",
+        "ParksPlaygroundsOrCommunitySquares",
+        "PublicFacilitiesBusStopsSchools",
+        "ParkingLots",
+        "WideMultiLaneRoads",
+        "CrosswalksOrOverpasses",
+        "Bridges",
+        "LandmarkBuildingsOrReligiousSites",
+        "TallTreesOrTreeLines",
+        "StreetTreesOrGreenBelts",
+        "CommunityGardens",
+        "ColorfulCleanFacadesOrWindows"
+      ]
+    }
+  },
+
+  "quality_checks": {
+    "data_validation": {
+      "proportion_sum": "P1 + P2 + P3 + P4 must equal 1.0",
+      "proportion_range": "Each p_i must be between 0 and 1",
+      "segregation_range": "S must be between 0 and 1"
+    },
+    "template_completeness": {
+      "required_sections": ["Summary", "Caption", "Calculation", "Answer"],
+      "visual_elements_reporting": "All identified elements must be reported with counts",
+      "calculation_transparency": "All intermediate steps must be shown"
+    }
+  }
+}

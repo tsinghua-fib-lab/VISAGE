@@ -1,0 +1,31 @@
+# === 1. 绝对要忽略的虚拟环境 (这是您报错的主因) ===
+vilaenv/
+*.pth
+*.ckpt
+*.bin
+*.weights
+venv/
+.env/
+__pycache__/
+*.pyc
+
+# === 2. 忽略动态链接库 (那些 .so 文件) ===
+*.so
+*.so.*
+*.dylib
+
+# === 3. 忽略大文件 (模型权重) ===
+*.pth
+*.pt
+*.ckpt
+*.onnx
+
+# === 4. 忽略数据集 (那些 .csv.gz) ===
+*.gz
+*.zip
+*.tar
+data/raw/
+# === 5. 其他杂项 ===
+.DS_Store
+.ipynb_checkpoints/
+# === 视频与高分辨率图 ===

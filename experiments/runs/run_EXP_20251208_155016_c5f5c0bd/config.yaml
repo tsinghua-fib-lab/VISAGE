@@ -1,0 +1,15 @@
+base_data_dir: /data3/maruolong/VISAGE/data/processed/training_data/31_cities
+base_output_dir: /data3/maruolong/VISAGE/data/processed/training_data/cross_train/31
+gpu_list:
+- 0
+- 1
+- 2
+- 3
+- 4
+- 5
+- 6
+- 7
+inference_mode: sequential
+num_folds: 5
+run_experiment: false
+run_literature: true

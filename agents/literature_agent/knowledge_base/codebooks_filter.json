@@ -1,0 +1,418 @@
+{
+  "street_view_codebook": [
+    {
+      "Name": "DetachedSingleFamilyHouse",
+      "Category": "housing_diversity_type",
+      "ImageryPerspective": "street_view",
+      "Definition": "Standalone residential units separated from neighboring buildings",
+      "DetectionHints": "Look for individual houses with space between structures",
+      "DirectionConsensus": "+",
+      "Confidence": "medium"
+    },
+    {
+      "Name": "BungalowOrLowRiseHouse",
+      "Category": "housing_diversity_type",
+      "ImageryPerspective": "street_view",
+      "Definition": "Single-story or low-height residential buildings",
+      "DetectionHints": "Identify single-level dwellings with small footprints",
+      "DirectionConsensus": "+",
+      "Confidence": "high"
+    },
+    {
+      "Name": "HighFencesOrWalls",
+      "Category": "barriers_boundaries",
+      "ImageryPerspective": "street_view",
+      "Definition": "Tall physical barriers surrounding properties",
+      "DetectionHints": "Notice tall fences, walls or privacy screens",
+      "DirectionConsensus": "+",
+      "Confidence": "high"
+    },
+    {
+      "Name": "BarbedWireOrGatedEnclosures",
+      "Category": "barriers_boundaries",
+      "ImageryPerspective": "street_view",
+      "Definition": "Security barriers with restricted access features",
+      "DetectionHints": "Look for gates, barbed wire, or security fencing",
+      "DirectionConsensus": "+",
+      "Confidence": "high"
+    },
+    {
+      "Name": "VacantLotsOrAbandonedBuildings",
+      "Category": "maintenance_vacancy",
+      "ImageryPerspective": "street_view",
+      "Definition": "Empty properties or derelict structures",
+      "DetectionHints": "Identify unused land or deteriorating buildings",
+      "DirectionConsensus": "+",
+      "Confidence": "medium"
+    },
+    {
+      "Name": "NoSidewalks",
+      "Category": "access_permeability",
+      "ImageryPerspective": "street_view",
+      "Definition": "Roads lacking pedestrian walkways",
+      "DetectionHints": "Check for absence of paved pedestrian paths",
+      "DirectionConsensus": "+",
+      "Confidence": "medium"
+    },
+    {
+      "Name": "LargeEmptyLand",
+      "Category": "land_use_mix",
+      "ImageryPerspective": "street_view",
+      "Definition": "Extensive undeveloped or vacant areas",
+      "DetectionHints": "Look for large unused open spaces",
+      "DirectionConsensus": "+",
+      "Confidence": "medium"
+    },
+    {
+      "Name": "DeterioratedStreets",
+      "Category": "maintenance_vacancy",
+      "ImageryPerspective": "street_view",
+      "Definition": "Roads in poor condition with visible damage",
+      "DetectionHints": "Notice cracked pavement or poor road maintenance",
+      "DirectionConsensus": "+",
+      "Confidence": "high"
+    },
+    {
+      "Name": "Graffiti",
+      "Category": "maintenance_vacancy",
+      "ImageryPerspective": "street_view",
+      "Definition": "Unauthorized paintings or markings on surfaces",
+      "DetectionHints": "Look for spray paint or wall writings",
+      "DirectionConsensus": "+",
+      "Confidence": "low"
+    },
+    {
+      "Name": "LitterOrTrashPiles",
+      "Category": "maintenance_vacancy",
+      "ImageryPerspective": "street_view",
+      "Definition": "Accumulated garbage or waste materials",
+      "DetectionHints": "Identify trash accumulation in public spaces",
+      "DirectionConsensus": "+",
+      "Confidence": "high"
+    },
+    {
+      "Name": "BoardedUpOrClosedShops",
+      "Category": "commercial_frontage",
+      "ImageryPerspective": "street_view",
+      "Definition": "Business premises that are shut or sealed",
+      "DetectionHints": "Look for boarded windows or closed storefronts",
+      "DirectionConsensus": "+",
+      "Confidence": "high"
+    },
+    {
+      "Name": "LackOfCommercialActivity",
+      "Category": "commercial_frontage",
+      "ImageryPerspective": "street_view",
+      "Definition": "Absence of retail or business establishments",
+      "DetectionHints": "Notice few or no commercial storefronts",
+      "DirectionConsensus": "+",
+      "Confidence": "medium"
+    },
+    {
+      "Name": "NarrowRoadsOrDeadEnds",
+      "Category": "road_structure",
+      "ImageryPerspective": "street_view",
+      "Definition": "Constricted streets or cul-de-sac configurations",
+      "DetectionHints": "Identify narrow lanes or road endings",
+      "DirectionConsensus": "+",
+      "Confidence": "low"
+    },
+    {
+      "Name": "MonofunctionalResidentialBlocks",
+      "Category": "land_use_mix",
+      "ImageryPerspective": "street_view",
+      "Definition": "Areas dominated solely by housing without mixed uses",
+      "DetectionHints": "Look for uniform residential-only zones",
+      "DirectionConsensus": "+",
+      "Confidence": "high"
+    },
+    {
+      "Name": "SparseOrShortShrubs",
+      "Category": "greenery_shade",
+      "ImageryPerspective": "street_view",
+      "Definition": "Limited or underdeveloped vegetation coverage",
+      "DetectionHints": "Notice minimal or small shrub plantings",
+      "DirectionConsensus": "+",
+      "Confidence": "medium"
+    },
+    {
+      "Name": "IsolatedLawnsWithoutTrees",
+      "Category": "greenery_shade",
+      "ImageryPerspective": "street_view",
+      "Definition": "Grassy areas lacking tree canopy or shade",
+      "DetectionHints": "Identify lawns without mature trees",
+      "DirectionConsensus": "+",
+      "Confidence": "low"
+    },
+    {
+      "Name": "RowHousesOrTownhouses",
+      "Category": "housing_diversity_type",
+      "ImageryPerspective": "street_view",
+      "Definition": "Attached residential units in continuous rows",
+      "DetectionHints": "Look for connected houses sharing walls",
+      "DirectionConsensus": "+",
+      "Confidence": "medium"
+    },
+    {
+      "Name": "ApartmentBuildingsOrHighRises",
+      "Category": "housing_diversity_type",
+      "ImageryPerspective": "street_view",
+      "Definition": "Multi-story residential complexes",
+      "DetectionHints": "Identify tall buildings with multiple units",
+      "DirectionConsensus": "-",
+      "Confidence": "medium"
+    },
+    {
+      "Name": "ParksPlaygroundsOrCommunitySquares",
+      "Category": "public_space",
+      "ImageryPerspective": "street_view",
+      "Definition": "Public recreational and gathering spaces",
+      "DetectionHints": "Look for parks, playgrounds or public squares",
+      "DirectionConsensus": "-",
+      "Confidence": "high"
+    },
+    {
+      "Name": "PublicFacilitiesBusStopsSchools",
+      "Category": "transport_hubs",
+      "ImageryPerspective": "street_view",
+      "Definition": "Community infrastructure and transit stops",
+      "DetectionHints": "Identify schools, bus stops, public buildings",
+      "DirectionConsensus": "-",
+      "Confidence": "high"
+    },
+    {
+      "Name": "ParkingLots",
+      "Category": "land_use_mix",
+      "ImageryPerspective": "both",
+      "Definition": "Designated areas for vehicle parking",
+      "DetectionHints": "Look for paved areas with parking markings",
+      "DirectionConsensus": "-",
+      "Confidence": "medium"
+    },
+    {
+      "Name": "WideMultiLaneRoads",
+      "Category": "road_structure",
+      "ImageryPerspective": "street_view",
+      "Definition": "Broad streets with multiple traffic lanes",
+      "DetectionHints": "Notice wide roads with several lanes",
+      "DirectionConsensus": "-",
+      "Confidence": "medium"
+    },
+    {
+      "Name": "CrosswalksOrOverpasses",
+      "Category": "access_permeability",
+      "ImageryPerspective": "street_view",
+      "Definition": "Pedestrian crossing infrastructure",
+      "DetectionHints": "Identify marked crosswalks or pedestrian bridges",
+      "DirectionConsensus": "-",
+      "Confidence": "medium"
+    },
+    {
+      "Name": "Bridges",
+      "Category": "access_permeability",
+      "ImageryPerspective": "street_view",
+      "Definition": "Structures spanning physical obstacles",
+      "DetectionHints": "Look for bridge structures over barriers",
+      "DirectionConsensus": "-",
+      "Confidence": "medium"
+    },
+    {
+      "Name": "LandmarkBuildingsOrReligiousSites",
+      "Category": "public_space",
+      "ImageryPerspective": "street_view",
+      "Definition": "Prominent architectural or cultural structures",
+      "DetectionHints": "Identify distinctive buildings or places of worship",
+      "DirectionConsensus": "-",
+      "Confidence": "medium"
+    },
+    {
+      "Name": "TallTreesOrTreeLines",
+      "Category": "greenery_shade",
+      "ImageryPerspective": "street_view",
+      "Definition": "Mature trees forming canopy or linear patterns",
+      "DetectionHints": "Look for tall trees or organized tree rows",
+      "DirectionConsensus": "-",
+      "Confidence": "high"
+    },
+    {
+      "Name": "StreetTreesOrGreenBelts",
+      "Category": "greenery_shade",
+      "ImageryPerspective": "street_view",
+      "Definition": "Trees along streets or continuous green corridors",
+      "DetectionHints": "Identify trees lining roads or green strips",
+      "DirectionConsensus": "-",
+      "Confidence": "high"
+    },
+    {
+      "Name": "CommunityGardens",
+      "Category": "public_space",
+      "ImageryPerspective": "street_view",
+      "Definition": "Shared gardening spaces for local residents",
+      "DetectionHints": "Look for organized planting beds in public areas",
+      "DirectionConsensus": "-",
+      "Confidence": "high"
+    },
+    {
+      "Name": "ColorfulCleanFacadesOrWindows",
+      "Category": "maintenance_vacancy",
+      "ImageryPerspective": "street_view",
+      "Definition": "Well-maintained building exteriors with visual appeal",
+      "DetectionHints": "Notice painted, clean buildings with intact windows",
+      "DirectionConsensus": "-",
+      "Confidence": "medium"
+    }
+  ],
+  "remote_sensing_codebook": [
+    {
+      "Name": "MonofunctionalResidentialZones",
+      "Category": "land_use_mix",
+      "ImageryPerspective": "remote_sensing",
+      "Definition": "Areas dedicated exclusively to residential use",
+      "DetectionHints": "Identify uniform residential land patterns",
+      "VisualManifestationRS": "Homogeneous residential building patterns",
+      "DirectionConsensus": "+",
+      "Confidence": "high"
+    },
+    {
+      "Name": "VacantOrDemolitionSites",
+      "Category": "maintenance_vacancy",
+      "ImageryPerspective": "remote_sensing",
+      "Definition": "Empty lots or areas with demolished structures",
+      "DetectionHints": "Look for bare land or demolition evidence",
+      "VisualManifestationRS": "Empty plots or rubble-filled areas",
+      "DirectionConsensus": "+",
+      "Confidence": "high"
+    },
+    {
+      "Name": "GridOrRadialStreetPatterns",
+      "Category": "road_structure",
+      "ImageryPerspective": "remote_sensing",
+      "Definition": "Regular geometric street network layouts",
+      "DetectionHints": "Identify grid-like or radial road arrangements",
+      "VisualManifestationRS": "Geometric street network patterns",
+      "DirectionConsensus": "+",
+      "Confidence": "medium"
+    },
+    {
+      "Name": "UniformHousingBlocks",
+      "Category": "housing_diversity_type",
+      "ImageryPerspective": "remote_sensing",
+      "Definition": "Consistently similar residential building forms",
+      "DetectionHints": "Notice repetitive housing layouts and sizes",
+      "VisualManifestationRS": "Repetitive building footprints and forms",
+      "DirectionConsensus": "+",
+      "Confidence": "high"
+    },
+    {
+      "Name": "RailwaysOrTrainTracks",
+      "Category": "barriers_boundaries",
+      "ImageryPerspective": "remote_sensing",
+      "Definition": "Rail transportation infrastructure corridors",
+      "DetectionHints": "Identify linear rail tracks and related facilities",
+      "VisualManifestationRS": "Linear rail corridors and stations",
+      "DirectionConsensus": "+",
+      "Confidence": "high"
+    },
+    {
+      "Name": "ExpresswaysOrHighways",
+      "Category": "barriers_boundaries",
+      "ImageryPerspective": "remote_sensing",
+      "Definition": "Major high-speed road transportation routes",
+      "DetectionHints": "Look for multi-lane high-capacity roads",
+      "VisualManifestationRS": "Wide linear transportation corridors",
+      "DirectionConsensus": "+",
+      "Confidence": "high"
+    },
+    {
+      "Name": "LowDensityHousing",
+      "Category": "housing_diversity_type",
+      "ImageryPerspective": "remote_sensing",
+      "Definition": "Sparse residential development patterns",
+      "DetectionHints": "Identify widely spaced building footprints",
+      "VisualManifestationRS": "Scattered buildings with large lots",
+      "DirectionConsensus": "-",
+      "Confidence": "low"
+    },
+    {
+      "Name": "LargeFootprintBuildings",
+      "Category": "housing_diversity_type",
+      "ImageryPerspective": "remote_sensing",
+      "Definition": "Structures with extensive ground coverage",
+      "DetectionHints": "Notice buildings occupying large land areas",
+      "VisualManifestationRS": "Large building outlines and footprints",
+      "DirectionConsensus": "-",
+      "Confidence": "medium"
+    },
+    {
+      "Name": "TallBuildings",
+      "Category": "housing_diversity_type",
+      "ImageryPerspective": "remote_sensing",
+      "Definition": "High-rise structures with significant height",
+      "DetectionHints": "Look for tall buildings and their shadows",
+      "VisualManifestationRS": "Building shadows and vertical profiles",
+      "DirectionConsensus": "-",
+      "Confidence": "high"
+    },
+    {
+      "Name": "CommercialActivityZones",
+      "Category": "commercial_frontage",
+      "ImageryPerspective": "remote_sensing",
+      "Definition": "Areas dedicated to business and retail activities",
+      "DetectionHints": "Identify commercial districts and shopping areas",
+      "VisualManifestationRS": "Commercial building clusters and parking",
+      "DirectionConsensus": "-",
+      "Confidence": "high"
+    },
+    {
+      "Name": "ParkingLots",
+      "Category": "land_use_mix",
+      "ImageryPerspective": "both",
+      "Definition": "Designated vehicle parking areas",
+      "DetectionHints": "Look for large paved surfaces for parking",
+      "VisualManifestationRS": "Large paved areas with vehicle patterns",
+      "DirectionConsensus": "-",
+      "Confidence": "medium"
+    },
+    {
+      "Name": "ParksSquaresOrSportsFields",
+      "Category": "public_space",
+      "ImageryPerspective": "remote_sensing",
+      "Definition": "Public recreational green spaces and facilities",
+      "DetectionHints": "Identify green areas with recreational features",
+      "VisualManifestationRS": "Green spaces with defined boundaries",
+      "DirectionConsensus": "-",
+      "Confidence": "high"
+    },
+    {
+      "Name": "LargeOpenPublicSpaces",
+      "Category": "public_space",
+      "ImageryPerspective": "remote_sensing",
+      "Definition": "Extensive publicly accessible open areas",
+      "DetectionHints": "Notice large unobstructed public spaces",
+      "VisualManifestationRS": "Large open areas in urban fabric",
+      "DirectionConsensus": "-",
+      "Confidence": "high"
+    },
+    {
+      "Name": "StreetTreesAndUrbanGreenStrips",
+      "Category": "greenery_shade",
+      "ImageryPerspective": "remote_sensing",
+      "Definition": "Linear vegetation along streets and corridors",
+      "DetectionHints": "Identify tree lines along road networks",
+      "VisualManifestationRS": "Linear green corridors along streets",
+      "DirectionConsensus": "-",
+      "Confidence": "medium"
+    },
+    {
+      "Name": "ColorfulRoofsOrArchitecturalDiversity",
+      "Category": "housing_diversity_type",
+      "ImageryPerspective": "remote_sensing",
+      "Definition": "Varied building appearances and roof characteristics",
+      "DetectionHints": "Notice diverse roof colors and building forms",
+      "VisualManifestationRS": "Varied roof colors and architectural styles",
+      "DirectionConsensus": "-",
+      "Confidence": "medium"
+    }
+  ],
+  "conflicts": []
+}

@@ -1,0 +1,50 @@
+{
+  "pipeline_execution": {
+    "status": "completed",
+    "timestamp": "2025-11-13T23:32:33.500899"
+  },
+  "summary_statistics": {
+    "papers_collected": 166,
+    "cues_extracted": 127,
+    "street_view_codebook_entries": 5,
+    "remote_sensing_codebook_entries": 3,
+    "conflicts_requiring_review": 0
+  },
+  "file_locations": {
+    "prisma_counts": "/data3/maruolong/VISAGE/data/prisma_counts.json",
+    "curator_table": "/data3/maruolong/VISAGE/data/curator_table.json",
+    "extracted_cues": "/data3/maruolong/VISAGE/data/extracted_cues.json",
+    "codebooks": "/data3/maruolong/VISAGE/data/codebooks.json"
+  },
+  "curator_results": {
+    "found": 480,
+    "deduped": 470,
+    "screened": 166,
+    "included": 166
+  },
+  "extractor_summary": {
+    "total_cues_extracted": 127,
+    "categories_distribution": {
+      "greenery_shade": 79,
+      "barriers_boundaries": 29,
+      "road_structure": 10,
+      "public_space": 4,
+      "land_use_mix": 3,
+      "transport_hubs": 2
+    }
+  },
+  "coder_summary": {
+    "street_view_categories": {
+      "greenery_shade": 1,
+      "barriers_boundaries": 1,
+      "road_structure": 1,
+      "public_space": 1,
+      "transport_hubs": 1
+    },
+    "remote_sensing_categories": {
+      "greenery_shade": 1,
+      "public_space": 1,
+      "land_use_mix": 1
+    }
+  }
+}

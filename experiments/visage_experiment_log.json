@@ -1,0 +1,116 @@
+{
+    "EXP_20251208_185554_a10d92ba": {
+        "experiment_id": "EXP_20251208_185554_a10d92ba",
+        "start_time": "2025-12-08T18:55:54.498497",
+        "status": "Running",
+        "run_dir": "/data3/maruolong/VISAGE/experiments/runs/run_EXP_20251208_185554_a10d92ba",
+        "config": {
+            "base_data_dir": "/data3/maruolong/VISAGE/data/processed/training_data/31_cities",
+            "base_output_dir": "/data3/maruolong/VISAGE/data/processed/training_data/cross_train/31",
+            "run_literature": false,
+            "run_experiment": false,
+            "run_training": true,
+            "run_inference": false,
+            "run_regression_viz": false,
+            "num_folds": 5,
+            "gpu_list": [
+                0,
+                1
+            ],
+            "inference_mode": "sequential"
+        },
+        "summary_metrics": {},
+        "best_model_info": {}
+    },
+    "EXP_20251208_190543_39c3ffba": {
+        "experiment_id": "EXP_20251208_190543_39c3ffba",
+        "start_time": "2025-12-08T19:05:43.856892",
+        "status": "Running",
+        "run_dir": "/data3/maruolong/VISAGE/experiments/runs/run_EXP_20251208_190543_39c3ffba",
+        "config": {
+            "base_data_dir": "/data3/maruolong/VISAGE/data/processed/training_data/31_cities",
+            "base_output_dir": "/data3/maruolong/VISAGE/data/processed/training_data/cross_train/31",
+            "run_literature": false,
+            "run_experiment": false,
+            "run_training": true,
+            "run_inference": false,
+            "run_regression_viz": false,
+            "num_folds": 5,
+            "gpu_list": [
+                0,
+                1
+            ],
+            "inference_mode": "sequential"
+        },
+        "summary_metrics": {},
+        "best_model_info": {}
+    },
+    "EXP_20251208_190745_1b403a82": {
+        "experiment_id": "EXP_20251208_190745_1b403a82",
+        "start_time": "2025-12-08T19:07:45.690444",
+        "status": "Running",
+        "run_dir": "/data3/maruolong/VISAGE/experiments/runs/run_EXP_20251208_190745_1b403a82",
+        "config": {
+            "base_data_dir": "/data3/maruolong/VISAGE/data/processed/training_data/31_cities",
+            "base_output_dir": "/data3/maruolong/VISAGE/data/processed/training_data/cross_train/31",
+            "run_literature": false,
+            "run_experiment": false,
+            "run_training": true,
+            "run_inference": false,
+            "run_regression_viz": false,
+            "num_folds": 5,
+            "gpu_list": [
+                0,
+                1
+            ],
+            "inference_mode": "sequential"
+        },
+        "summary_metrics": {},
+        "best_model_info": {}
+    },
+    "EXP_20251208_191344_2df38a82": {
+        "experiment_id": "EXP_20251208_191344_2df38a82",
+        "start_time": "2025-12-08T19:13:44.162035",
+        "status": "Running",
+        "run_dir": "/data3/maruolong/VISAGE/experiments/runs/run_EXP_20251208_191344_2df38a82",
+        "config": {
+            "base_data_dir": "/data3/maruolong/VISAGE/data/processed/training_data/31_cities",
+            "base_output_dir": "/data3/maruolong/VISAGE/data/processed/training_data/cross_train/31",
+            "run_literature": false,
+            "run_experiment": false,
+            "run_training": true,
+            "run_inference": false,
+            "run_regression_viz": false,
+            "num_folds": 5,
+            "gpu_list": [
+                0,
+                1
+            ],
+            "inference_mode": "sequential"
+        },
+        "summary_metrics": {},
+        "best_model_info": {}
+    },
+    "EXP_20251208_192104_adeb9db9": {
+        "experiment_id": "EXP_20251208_192104_adeb9db9",
+        "start_time": "2025-12-08T19:21:04.315803",
+        "status": "Running",
+        "run_dir": "/data3/maruolong/VISAGE/experiments/runs/run_EXP_20251208_192104_adeb9db9",
+        "config": {
+            "base_data_dir": "/data3/maruolong/VISAGE/data/processed/training_data/31_cities",
+            "base_output_dir": "/data3/maruolong/VISAGE/data/processed/training_data/cross_train/31",
+            "run_literature": false,
+            "run_experiment": false,
+            "run_training": false,
+            "run_inference": true,
+            "run_regression_viz": false,
+            "num_folds": 5,
+            "gpu_list": [
+                0
+            ],
+            "inference_mode": "sequential"
+        },
+        "summary_metrics": {},
+        "best_model_info": {}
+    }
+}

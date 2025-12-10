@@ -1,0 +1,100 @@
+# Cue Detection Prompt Configuration
+template_name: "cue_detection"
+version: "1.0"
+description: "Guides multimodal models for visual element detection in street view and remote sensing images"
+
+# Street View Image Detection
+street_view_detection:
+  role: "You are an urban geography and spatial inequality expert."
+  task: "Given a U.S. street view image from a Census Tract, detect the presence (1) or absence (0) of visual elements that affect income segregation."
+  instructions:
+    - "Carefully examine the image for the specified elements"
+    - "Output 1 if element is clearly visible, 0 otherwise"
+    - "Return answer strictly in one-line JSONL format"
+    - "Do not include any explanations"
+  output_format: '{"Element1": 1, "Element2": 0, ..., "ElementN": 1}'
+  elements:
+    increase_segregation:
+      - "DetachedSingleFamilyHouse"
+      - "BungalowOrLowRiseHouse"
+      - "HighFencesOrWalls"
+      - "BarbedWireOrGatedEnclosures"
+      - "VacantLotsOrAbandonedBuildings"
+      - "LargeEmptyLand"
+      - "DeterioratedStreets"
+      - "Graffiti"
+      - "LitterOrTrashPiles"
+      - "BoardedUpOrClosedShops"
+      - "LackOfCommercialActivity"
+      - "NarrowRoadsOrDeadEnds"
+      - "NoSidewalks"
+      - "MonofunctionalResidentialBlocks"
+      - "SparseOrShortShrubs"
+      - "IsolatedLawnsWithoutTrees"
+    decrease_segregation:
+      - "RowHousesOrTownhouses"
+      - "ApartmentBuildingsOrHighRises"
+      - "VisibleShopsOrColorfulSigns"
+      - "ConvenienceStoresOrRestaurants"
+      - "ParksPlaygroundsOrCommunitySquares"
+      - "PublicFacilitiesBusStopsSchools"
+      - "ParkingLots"
+      - "WideMultiLaneRoads"
+      - "CrosswalksOrOverpasses"
+      - "Bridges"
+      - "LandmarkBuildingsOrReligiousSites"
+      - "MuralsSculpturesOrUrbanArt"
+      - "TallTreesOrTreeLines"
+      - "StreetTreesOrGreenBelts"
+      - "CommunityGardens"
+      - "ColorfulCleanFacadesOrWindows"
+
+# Remote Sensing Image Detection
+remote_sensing_detection:
+  role: "You are an urban geography and spatial inequality expert."
+  task: "Given a U.S. satellite or aerial image from a Census Tract, detect the presence (1) or absence (0) of visual elements that affect income segregation."
+  instructions:
+    - "Carefully examine the image for the specified elements"
+    - "Output 1 if element is clearly visible, 0 otherwise"
+    - "Return answer strictly in one-line JSONL format"
+    - "Do not include any explanations"
+  output_format: '{"Element1": 1, "Element2": 0, ..., "ElementN": 1}'
+  elements:
+    increase_segregation:
+      - "LowDensityHousing"
+      - "CulDeSacsOrFencedBlocks"
+      - "MonofunctionalResidentialZones"
+      - "VacantOrDemolitionSites"
+      - "ScatteredLawnsOrPrivateGreenery"
+      - "IsolatedLargeLots"
+      - "DisconnectedStreetSegments"
+      - "FragmentedDevelopmentPatches"
+      - "UnpavedRoadsOrDirtTracks"
+      - "UniformHousingBlocks"
+      - "LowStreetConnectivity"
+    decrease_segregation:
+      - "LargeFootprintBuildings"
+      - "TallBuildings"
+      - "CommercialActivityZones"
+      - "ParkingLots"
+      - "ParksSquaresOrSportsFields"
+      - "GridOrRadialStreetPatterns"
+      - "LargeOpenPublicSpaces"
+      - "StreetTreesAndUrbanGreenStrips"
+      - "OverpassesOrInterchanges"
+      - "RailwaysOrTrainTracks"
+      - "ExpresswaysOrHighways"
+      - "SchoolsOrEducationalCampuses"
+      - "WideStreetsWithMediansOrShoulders"
+      - "TransportHubsOrStations"
+      - "ColorfulRoofsOrArchitecturalDiversity"
+
+# Model Configuration
+model_config:
+  model: "Pro/Qwen/Qwen2.5-VL-7B-Instruct"
+  max_tokens: 500
+  image_detail: "low"
+  retry_policy:
+    base_wait: 1
+    max_wait: 600
+    max_retries: 5

@@ -1,0 +1,102 @@
+# QA Generation Prompt Configuration
+template_name: "qa_generation"
+version: "1.0"
+description: "Question-answer prompt variants for income segregation estimation"
+
+# Base Prompt Structure
+base_structure:
+  role: "You are a geography inequality expert."
+  step_1: "Based on the provided images, estimate the proportions of residents or visitors in the census tract belonging to different income levels."
+  step_2: "Calculate the income segregation (S) using the formula: S = 2/3 * Σ(|p_i - 0.25|)"
+  output_format: |
+    - Income Group Proportions:
+    - Low-Income (P1): 0.XX
+    - Lower-Middle-Income (P2): 0.XX
+    - Upper-Middle-Income (P3): 0.XX
+    - High-Income (P4): 0.XX
+    
+    - Income Segregation Index (S): X.XX
+
+# Prompt Variants
+prompt_variants:
+  - "Here are multiple satellite and street images from a U.S. census tract. Based on these images, please estimate the income segregation (S) within the tract. Income segregation is measured by the income distribution of the people who visit or reside in the community, reflecting the separation between different income groups. The index (S) ranges from 0 to 1, where higher values indicate more segregation between income groups.\n\nSTEP 1: Using all the visual data, estimate the distribution of individuals among the four income groups."
+  - "Here are multiple satellite and street images from a U.S. census tract. Based on these images, please estimate the income segregation (S) within the tract. Income segregation reflects the income distribution of the residents and visitors, showing how separated the income groups are. The score ranges from 0 (more diverse income distribution) to 1 (more segregated income distribution).\n\nSTEP 1: Assess the proportion of people from each income group in this tract based on all the images."
+  - "Here are multiple satellite and street images from a U.S. census tract. Based on these images, estimate the income segregation (S) within the tract. Income segregation measures the distribution of income levels among the people who live in or visit the tract. A higher value means more income concentration in fewer groups, while a lower value means a greater diversity of income levels.\n\nSTEP 1: Using all the images, estimate the share of individuals from each income group."
+  - "Here are multiple satellite and street images from a U.S. census tract. Based on these images, estimate the income segregation (S) within the tract. Income segregation (S) reflects how much income groups are represented in the area. A higher value (closer to 1) indicates fewer income groups, while a lower value (closer to 0) indicates a more diverse income distribution.\n\nSTEP 1: Use all the images to estimate the proportion of people from each income group in the tract."
+  - "Here are multiple satellite and street images from a U.S. census tract. Based on these images, please estimate the income segregation (S) within the tract. Income segregation is a metric showing how diverse or concentrated income groups are in the community. A value close to 1 indicates high segregation, while a value close to 0 indicates a more equal representation of income groups.\n\nSTEP 1: Using all the images, estimate the distribution of individuals into the four income groups."
+  - "Here are multiple satellite and street images from a U.S. census tract. Based on these images, estimate the income segregation (S) within the tract. Income segregation measures how distinct the income groups are in the community, considering both residents and visitors. A higher index (closer to 1) indicates more separation between income groups, and a lower index (closer to 0) indicates a greater income diversity.\n\nSTEP 1: Analyze all the images and estimate the proportion of each income group."
+  - "Here are multiple satellite and street images from a U.S. census tract. Based on these images, estimate the income segregation (S) within the tract. Income segregation shows how separated income groups are in the area. The index ranges from 0 to 1, where a value close to 1 means greater segregation and a value close to 0 means more diverse income distribution.\n\nSTEP 1: Use the visual data from all the images to estimate the share of individuals in each income group."
+  - "Here are multiple satellite and street images from a U.S. census tract. Based on these images, assess the income segregation (S) within the tract. Income segregation measures the level of separation between different income groups. A value of 1 indicates full segregation, while 0 indicates an equal distribution across income groups.\n\nSTEP 1: Using all the visual information, estimate the distribution of individuals in the four income groups."
+  - "Here are multiple satellite and street images from a U.S. census tract. Based on these images, estimate the income segregation (S) within the tract. Income segregation refers to the distribution of income groups in the tract. Higher values (close to 1) indicate fewer income groups, while lower values (close to 0) indicate a more diverse income distribution.\n\nSTEP 1: Analyze all the images and estimate how individuals from different income groups are represented."
+  - "Here are multiple satellite and street images from a U.S. census tract. Based on these images, estimate the income segregation (S) within the tract. The segregation score is based on how people from different income groups are distributed across the area. A higher score indicates more concentration of similar income groups, while a lower score indicates more income diversity.\n\nSTEP 1: Using all the images, estimate the portion of individuals in each income bracket."
+
+# Common Suffix
+common_suffix: |
+  The income levels are as follows:
+  - Low-Income (P1)
+  - Lower-Middle-Income (P2)
+  - Upper-Middle-Income (P3)
+  - High-Income (P4)
+  
+  These proportions should sum to 1.
+  
+  STEP 2: Based on the proportions estimated in Step 1, calculate the income segregation (S) using the formula:  
+  S = 2/3 * Σ(|p_i - 0.25|),
+  where p_i represents the proportion of individuals in each income group (P1, P2, P3, P4).
+  
+  Important: When you output, please include explanations, calculations, or analysis in your response. And provide the estimated values in the end in the following format:
+  
+  Output format:
+  - Income Group Proportions:
+  - Low-Income (P1): 0.XX
+  - Lower-Middle-Income (P2): 0.XX
+  - Upper-Middle-Income (P3): 0.XX
+  - High-Income (P4): 0.XX
+  
+  - Income Segregation Index (S): X.XX
+
+# City Mapping
+city_prefix_map:
+  "250": "Boston"
+  "170": "Chicago"
+  "4808": "Dallas"
+  "4811": "Dallas"
+  "4812": "Dallas"
+  "4825": "Dallas"
+  "4839": "Dallas"
+  "261": "Detroit"
+  "0603": "Los Angeles"
+  "06075": "San Francisco"
+  "1208": "Miami"
+  "360": "New York"
+  "421": "Philadelphia"
+  "530": "Seattle"
+  "110": "Washington"
+  "4845": "Austin"
+  "4849": "Austin"
+  "245": "Baltimore"
+  "371": "Charlotte"
+  "390": "Columbus"
+  "080": "Denver"
+  "4814": "El Paso"
+  "4843": "Fort Worth"
+  "4815": "Houston"
+  "4820": "Houston"
+  "4833": "Houston"
+  "1203": "Jacksonville"
+  "550": "Milwaukee"
+  "320": "Las Vegas"
+  "471": "Memphis"
+  "40": "Oklahoma City"
+  "04013": "Phoenix"
+  "410": "Portland"
+  "4802": "San Antonio"
+  "06073": "San Diego"
+  "0608": "San Jose"
+  "04019": "Tucson"
+  "350": "Albuquerque"
+
+# Processing Instructions
+processing:
+  image_prefix: "<image>"
+  city_replacement: "Here are multiple satellite and street images from a U.S. census tract in {city}."

@@ -1,0 +1,241 @@
+# VISAGE Cue Extraction Prompts
+# For Extractor Agent - Evidence Extraction from Academic Papers
+# Based on core workflow specification
+
+version: "1.0"
+description: "Prompt templates for extracting image-observable cues following exact workflow specification"
+
+prompts:
+  system_prompt:
+    name: "evidence_extractor_system"
+    description: "Core system identity for Extractor Agent"
+    template: |
+      You are an evidence extractor. Use only the provided full texts from the Curator. Do not speculate. 
+      Extract image-observable built-environment cues and their association with socioeconomic exposure 
+      segregation/mixing.
+
+  extraction_task:
+    name: "extraction_task_definition"
+    description: "Exact task definition from workflow specification"
+    template: |
+      TASK:
+      For each ACCEPTED paper, extract cues that are observable in images and linked to exposure 
+      segregation/mixing. Assign a provisional imagery perspective and category. Provide a short rationale 
+      plus one ≤40-word verbatim quote with a page/figure anchor.
+
+  extraction_rules:
+    name: "extraction_rules_strict"
+    description: "Strict extraction rules from workflow specification"
+    template: |
+      RULES:
+      - ImageryPerspective is a provisional tag: street_view | remote_sensing | both | unclear.
+      - Direction: increase = more segregated; decrease = more mixed; ambiguous = conflicting/insufficient.
+      - Rationale40w ≤ 40 words, distilled (not a quote).
+      - EvidenceQuote ≤ 40 words, verbatim, with EvidenceLocation (page/figure).
+      - Include AppearanceHintsRaw if the paper describes how the cue looks.
+      - If a paper has no image-observable cue, omit it (no empty shells).
+      - Do not invent content; set Confidence accordingly.
+
+  output_contract:
+    name: "output_contract_strict"
+    description: "Strict output contract following exact specification"
+    template: |
+      OUTPUT CONTRACT (RETURN ONE JSON OBJECT; NO EXTRA KEYS; USE null IF UNKNOWN):
+      {"extracted_cues":[
+      {
+      "paper_id":"string", // DOI or unique key
+      "CueNameRaw":"string",
+      "ImageryPerspective":"street_view|remote_sensing|both|unclear",
+      "ProvisionalCategory":"access_permeability|housing_diversity_type|commercial_frontage|maintenance_vacancy|greenery_shade|road_structure|barriers_boundaries|public_space|transport_hubs|land_use_mix",
+      "Direction":"increase|decrease|ambiguous",
+      "Rationale40w":"string",
+      "EvidenceQuote":"string",
+      "EvidenceLocation":"string",
+      "AppearanceHintsRaw":"string|null",
+      "Geography":"US|EU|Global|City|null",
+      "EvidenceType":"observational|quasi-experimental|survey|modeling|null",
+      "Confidence":"high|medium|low"
+      }
+      ]}
+
+  validation_rules:
+    name: "validation_rules_strict"
+    description: "Strict validation rules from workflow specification"
+    template: |
+      VALIDATION:
+      - Return JSON only (no prose).
+      - If any schema is violated, output exactly: SCHEMA_VIOLATION
+
+  category_definitions:
+    name: "category_definitions_exact"
+    description: "Exact category definitions from workflow specification"
+    template: |
+      PROVISIONAL CATEGORY DEFINITIONS:
+      
+      access_permeability: Street connectivity, sidewalks, barriers to movement
+      housing_diversity_type: Building types, heights, densities, architectural styles
+      commercial_frontage: Storefronts, signage, business types, retail presence
+      maintenance_vacancy: Building conditions, vacant lots, graffiti, litter
+      greenery_shade: Trees, parks, vegetation coverage, green spaces
+      road_structure: Road widths, patterns, infrastructure, street networks
+      barriers_boundaries: Fences, walls, highways, railways, physical separators
+      public_space: Parks, plazas, community facilities, gathering spaces
+      transport_hubs: Bus stops, stations, transit infrastructure, mobility nodes
+      land_use_mix: Mixed-use development, zoning patterns, functional diversity
+
+  perspective_guidelines:
+    name: "perspective_guidelines_detailed"
+    description: "Detailed guidelines for assigning imagery perspectives"
+    template: |
+      IMAGERY PERSPECTIVE ASSIGNMENT GUIDELINES:
+      
+      street_view: Features visible at street level (facades, sidewalks, signs, fences)
+      - Building exteriors, storefronts, street furniture
+      - Pedestrian infrastructure, crosswalks, bus stops
+      - Ground-level vegetation, litter, graffiti
+      
+      remote_sensing: Features visible from above (patterns, footprints, layouts)
+      - Building footprints, roof forms, parcel boundaries
+      - Street patterns, block layouts, land use zones
+      - Large green spaces, parking lots, sports fields
+      
+      both: Features visible in both perspectives
+      - Parks, public squares, major roads
+      - Building types that show patterns from above and details from street level
+      
+      unclear: Cannot determine from paper description
+
+  confidence_assessment:
+    name: "confidence_assessment_criteria"
+    description: "Criteria for assessing evidence confidence"
+    template: |
+      CONFIDENCE ASSESSMENT CRITERIA:
+      
+      high: 
+      - Direct empirical evidence with clear methodology
+      - Multiple supporting statements in paper
+      - Strong theoretical foundation
+      - Explicit causal or correlational claims
+      
+      medium:
+      - Single empirical finding with reasonable support
+      - Indirect evidence with logical connection
+      - Moderate theoretical backing
+      - Correlational evidence without strong causality
+      
+      low:
+      - Speculative or suggestive statements
+      - Weak empirical support
+      - Contradictory evidence in same paper
+      - Limited theoretical justification
+
+  evidence_processing:
+    name: "evidence_processing_guidelines"
+    description: "Guidelines for processing evidence quotes and rationales"
+    template: |
+      EVIDENCE PROCESSING GUIDELINES:
+      
+      RATIONALE40w (≤40 words):
+      - Distill the core theoretical mechanism
+      - Explain how cue relates to segregation/mixing
+      - Use your own words, not direct quotes
+      - Focus on causal or correlational pathway
+      
+      EVIDENCEQUOTE (≤40 words):
+      - Extract verbatim text from paper
+      - Preserve original wording and meaning
+      - Include key supporting statement
+      - Must be directly from paper content
+      
+      EVIDENCELOCATION:
+      - Page number: "p.12"
+      - Figure reference: "Figure 3"
+      - Section reference: "Methods section"
+      - Use most specific location available
+
+variables:
+  imagery_perspectives:
+    - "street_view"
+    - "remote_sensing"
+    - "both"
+    - "unclear"
+
+  direction_types:
+    - "increase"
+    - "decrease"
+    - "ambiguous"
+
+  categories:
+    - "access_permeability"
+    - "housing_diversity_type"
+    - "commercial_frontage"
+    - "maintenance_vacancy"
+    - "greenery_shade"
+    - "road_structure"
+    - "barriers_boundaries"
+    - "public_space"
+    - "transport_hubs"
+    - "land_use_mix"
+
+  geography_types:
+    - "US"
+    - "EU"
+    - "Global"
+    - "City"
+    - null
+
+  evidence_types:
+    - "observational"
+    - "quasi-experimental"
+    - "survey"
+    - "modeling"
+    - null
+
+  confidence_levels:
+    - "high"
+    - "medium"
+    - "low"
+
+  constraints:
+    rationale_max_words: 40
+    evidence_quote_max_words: 40
+    require_verbatim_quotes: true
+    no_empty_shells: true
+    no_speculation: true
+
+  output_schema:
+    extracted_cues:
+      required_fields:
+        - "paper_id"
+        - "CueNameRaw"
+        - "ImageryPerspective"
+        - "ProvisionalCategory"
+        - "Direction"
+        - "Rationale40w"
+        - "EvidenceQuote"
+        - "EvidenceLocation"
+        - "AppearanceHintsRaw"
+        - "Geography"
+        - "EvidenceType"
+        - "Confidence"
+      constraints:
+        - "NO_EXTRA_KEYS"
+        - "USE_null_IF_UNKNOWN"
+        - "RETURN_ONE_JSON_OBJECT"
+
+  validation:
+    error_response: "SCHEMA_VIOLATION"
+    constraints:
+      - "RETURN_JSON_ONLY"
+      - "NO_PROSE"
+      - "STRICT_SCHEMA_COMPLIANCE"
+
+workflow_steps:
+  1: "system_initialization"
+  2: "paper_processing"
+  3: "cue_identification"
+  4: "evidence_extraction"
+  5: "attribute_assignment"
+  6: "confidence_assessment"
+  7: "output_generation"
+  8: "validation_check"

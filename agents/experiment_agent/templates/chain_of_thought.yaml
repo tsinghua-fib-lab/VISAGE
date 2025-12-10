@@ -1,0 +1,271 @@
+# Chain of Thought Template Definition
+template_name: "chain_of_thought"
+version: "1.0"
+description: "Clearly defines the four-step reasoning structure, placeholders, and writing standards"
+
+# Complete Template with Actual Format
+complete_template: |
+  ### 1. **<Summary>**  
+  Based on the provided street view and remote sensing images, our goal is to estimate the level of income segregation within the given Census Tract (CT). Income segregation is measured by assessing the distribution of different income groups visiting or residing in the area. By analyzing key visual elements, we infer the likely income composition of individuals associated with this location. Once the income proportions are estimated, we compute the segregation index using the predefined formula.
+
+  ### 2. **<Caption>**
+  {{remote_caption}}   
+  {{street_caption}}
+  3. **Based on these observations**, I estimate the proportion of visitors or residents in the CT belonging to different income levels:  
+     - **Low-Income (P1):** {{p1:.2f}}  
+     - **Lower-Middle-Income (P2):** {{p2:.2f}}  
+     - **Upper-Middle-Income (P3):** {{p3:.2f}}  
+     - **High-Income (P4):** {{p4:.2f}}
+
+  ### 3. **<Calculation>**  
+  The segregation index (S) is computed using the formula:  
+  S = (2/3) * Σ (|p_i - 0.25|), where p_i represents the proportion of individuals belonging to each income group (P1, P2, P3, P4) in the given tract.  
+
+  Substituting the estimated values:  
+  S = (2/3) * (|{{p1:.2f}} - 0.25| + |{{p2:.2f}} - 0.25| + |{{p3:.2f}} - 0.25| + |{{p4:.2f}} - 0.25|)  
+  S = (2/3) * ({{q1:.2f}} + {{q2:.2f}} + {{q3:.2f}} + {{q4:.2f}})
+
+  After calculation:  
+  S = {{segregation_score:.2f}}
+
+  ### 4. **<Answer>**  
+  OUTPUT:  
+  - Income Group Proportions: 
+  - Low-Income (P1): {{p1:.2f}}
+  - Lower-Middle-Income (P2): {{p2:.2f}}
+  - Upper-Middle-Income (P3): {{p3:.2f}}
+  - High-Income (P4): {{p4:.2f}}
+    
+  - Income Segregation Index (S): {{segregation_score:.2f}}
+
+# Caption Generation Templates
+caption_templates:
+  remote_sensing: |
+    1. **Among the 7 remote sensing images**, {{remote_increase_elements}}, which may contribute to greater income segregation and reduced income diversity among visitors; {{remote_decrease_elements}}, which may help promote social inclusion and increase income diversity among visitors.
+  
+  street_view: |
+    2. **Among the {{street_count}} street view images**, {{street_increase_elements}}, which may contribute to increased segregation; {{street_decrease_elements}}, which may help promote diversity and reduce income segregation.
+
+# Element Display Format
+element_format: "{{count}} image(s) show {{element_name}}"
+
+# Visual Elements Classification
+visual_elements:
+  remote_sensing:
+    increase_segregation_elements:
+      - "MonofunctionalResidentialZones"
+      - "VacantOrDemolitionSites"
+      - "GridOrRadialStreetPatterns"
+      - "UniformHousingBlocks"
+      - "RailwaysOrTrainTracks"
+      - "ExpresswaysOrHighways"
+    decrease_segregation_elements:
+      - "LowDensityHousing"
+      - "LargeFootprintBuildings"
+      - "TallBuildings"
+      - "CommercialActivityZones"
+      - "ParkingLots"
+      - "ParksSquaresOrSportsFields"
+      - "LargeOpenPublicSpaces"
+      - "StreetTreesAndUrbanGreenStrips"
+      - "ColorfulRoofsOrArchitecturalDiversity"
+  
+  street_view:
+    increase_segregation_elements:
+      - "DetachedSingleFamilyHouse"
+      - "BungalowOrLowRiseHouse"
+      - "HighFencesOrWalls"
+      - "BarbedWireOrGatedEnclosures"
+      - "VacantLotsOrAbandonedBuildings"
+      - "NoSidewalks"
+      - "LargeEmptyLand"
+      - "DeterioratedStreets"
+      - "Graffiti"
+      - "LitterOrTrashPiles"
+      - "BoardedUpOrClosedShops"
+      - "LackOfCommercialActivity"
+      - "NarrowRoadsOrDeadEnds"
+      - "MonofunctionalResidentialBlocks"
+      - "SparseOrShortShrubs"
+      - "IsolatedLawnsWithoutTrees"
+      - "RowHousesOrTownhouses"
+    decrease_segregation_elements:
+      - "ApartmentBuildingsOrHighRises"
+      - "ParksPlaygroundsOrCommunitySquares"
+      - "PublicFacilitiesBusStopsSchools"
+      - "ParkingLots"
+      - "WideMultiLaneRoads"
+      - "CrosswalksOrOverpasses"
+      - "Bridges"
+      - "LandmarkBuildingsOrReligiousSites"
+      - "TallTreesOrTreeLines"
+      - "StreetTreesOrGreenBelts"
+      - "CommunityGardens"
+      - "ColorfulCleanFacadesOrWindows"
+
+# Data Processing Pipeline Definition
+data_processing_pipeline:
+  # Step 1: Generate formatted element descriptions
+  format_elements:
+    remote_increase_elements:
+      source: "visual_elements.remote_sensing.increase_segregation_elements"
+      processor: "format_elements_function"
+      parameters: ["remote_element_counts", "element_format"]
+      output: "remote_increase_elements"
+    
+    remote_decrease_elements:
+      source: "visual_elements.remote_sensing.decrease_segregation_elements"
+      processor: "format_elements_function"
+      parameters: ["remote_element_counts", "element_format"]
+      output: "remote_decrease_elements"
+    
+    street_increase_elements:
+      source: "visual_elements.street_view.increase_segregation_elements"
+      processor: "format_elements_function"
+      parameters: ["street_element_counts", "element_format"]
+      output: "street_increase_elements"
+    
+    street_decrease_elements:
+      source: "visual_elements.street_view.decrease_segregation_elements"
+      processor: "format_elements_function"
+      parameters: ["street_element_counts", "element_format"]
+      output: "street_decrease_elements"
+  
+  # Step 2: Generate captions
+  generate_captions:
+    remote_caption:
+      source: "caption_templates.remote_sensing"
+      parameters: ["remote_increase_elements", "remote_decrease_elements"]
+      output: "remote_caption"
+    
+    street_caption:
+      source: "caption_templates.street_view"
+      parameters: ["street_count", "street_increase_elements", "street_decrease_elements"]
+      output: "street_caption"
+  
+  # Step 3: Generate complete content
+  generate_complete_content:
+    final_content:
+      source: "complete_template"
+      parameters: [
+        "remote_caption", "street_caption", 
+        "p1", "p2", "p3", "p4",
+        "q1", "q2", "q3", "q4",
+        "segregation_score"
+      ]
+      output: "final_content"
+
+# Required Data Inputs (to be provided by Python code)
+required_data_inputs:
+  # Raw data read from data files
+  remote_element_counts: "Dictionary of element counts from remote sensing images"
+  street_element_counts: "Dictionary of element counts from street view images"
+  street_count: "Number of street view images in the tract"
+  p1: "Proportion of low-income group (from income distribution data)"
+  p2: "Proportion of lower-middle-income group (from income distribution data)"
+  p3: "Proportion of upper-middle-income group (from income distribution data)"
+  p4: "Proportion of high-income group (from income distribution data)"
+  
+  # Intermediate values calculated from raw data
+  q1: "abs(p1 - 0.25)"
+  q2: "abs(p2 - 0.25)"
+  q3: "abs(p3 - 0.25)"
+  q4: "abs(p4 - 0.25)"
+  segregation_score: "(2/3) * (q1 + q2 + q3 + q4)"
+
+# File Paths Configuration
+file_paths:
+  # Main data files
+  input_json: "/data3/maruolong/segregation/Train/Try/update/31_update_only_prompt_all_data_add_rs.json"
+  output_json: "/data3/maruolong/segregation/Train/Try/update/31_all_cities_seg_update_caption.json"
+  
+  # Visual element description files
+  remote_description: "/data3/maruolong/segregation/Baseline/All_Cities/analysis/caption/rs_images/rs_aggregated_description_by_tract.jsonl"
+  street_description: "/data3/maruolong/segregation/Baseline/All_Cities/analysis/caption/aggregated_description_by_tract.jsonl"
+  
+  # Remote sensing image mapping file
+  json1_path: "/data3/maruolong/Train_Data/Urbanarea_dominant_race_data_all.json"
+  
+  # List of cities to process
+  cities:
+    - "Boston"
+    - "Chicago"
+    - "Dallas"
+    - "Detroit"
+    - "Los_Angeles"
+    - "Miami"
+    - "New_York"
+    - "Philadelphia"
+    - "San_Francisco"
+    - "Seattle"
+    - "Washington"
+    - "Albuquerque"
+    - "Austin"
+    - "Baltimore"
+    - "Charlotte"
+    - "Columbus"
+    - "Denver"
+    - "El Paso"
+    - "Fort Worth"
+    - "Houston"
+    - "Jacksonville"
+    - "Las Vegas"
+    - "Memphis"
+    - "Milwaukee"
+    - "Oklahoma City"
+    - "Phoenix"
+    - "Portland"
+    - "San Antonio"
+    - "San Diego"
+    - "San Jose"
+    - "Tucson"
+
+# Data Source Paths (dynamically generated)
+data_sources:
+  # Image folder path template
+  image_folders_template: "/data3/maruolong/segregation/Baseline/{city}/images"
+  
+  # Segregation data path template
+  segregation_jsonl_template: "/data3/maruolong/segregation/All_time/visit_data/{city}_2019/{city}_2019_tract_segregation.jsonl"
+  
+  # Income distribution data path template
+  income_distribution_template: "/data3/maruolong/segregation/All_time/visit_data/{city}_2019/{city}_2019_tract_income_distribution.jsonl"
+
+# Data Processing Configuration
+data_processing:
+  # Remote sensing image processing
+  remote_sensing:
+    image_count: 7
+    use_first_image: true  # Whether to use only the first remote sensing image
+    
+  # Street view image processing
+  street_view:
+    supported_formats: [".jpg"]
+    sort_images: true
+    
+  # Income distribution
+  income_distribution:
+    default_values: [0.0, 0.0, 0.0, 0.0]
+    groups:
+      - "Low-Income (P1)"
+      - "Lower-Middle-Income (P2)"
+      - "Upper-Middle-Income (P3)"
+      - "High-Income (P4)"
+
+# Calculation Parameters
+calculations:
+  segregation_formula: "S = (2/3) * Σ (|p_i - 0.25|)"
+  base_proportion: 0.25
+  scaling_factor: 0.6667  # 2/3
+
+# Writing Guidelines
+writing_guidelines:
+  - "Use professional and objective language for descriptions"
+  - "Reason based on visual evidence"
+  - "Clearly label data sources and calculation methods"
+  - "Maintain logical coherence and clear structure"
+  - "Use Markdown formatting to enhance readability"
+  - "Include actual element counts in captions"
+  - "Follow the exact numbering format: 1., 2., 3., 4."
+  - "Reference specific image counts (7 remote sensing, {{street_count}} street view)"
+  - "Use consistent income group labels: Low-Income (P1), Lower-Middle-Income (P2), etc."
