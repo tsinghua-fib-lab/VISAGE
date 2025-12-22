@@ -27,7 +27,7 @@ By bridging high-level social theory with large-scale observation through automa
 
 VISAGE reframes urban perception as an interpretable reasoning task by organizing three specialized agents into a closed-loop discovery process.
 
-![Loading Overview](asset/framwork.png "The VISAGE architecture: integrating literature, experiment, and perception agents.")
+![Loading Overview](assets/framwork.png "The VISAGE architecture: integrating literature, experiment, and perception agents.")
 
 
 ---
