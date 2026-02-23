@@ -1,6 +1,6 @@
 # VISAGE
 ---
-This is the implementation of our paper Perceiving Exposure Segregation with AI Urban Scientist.
+This is the implementation of our paper Perceiving exposure segregation with open urban imagery.
 
 <p align="center">
     <a href="https://github.com/tsinghua-fib-lab/VISAGE/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License"></a>
