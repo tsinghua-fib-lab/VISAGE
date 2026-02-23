@@ -53,6 +53,8 @@ conda activate visage
 pip install -r requirements.txt
 ```
 
+Estimated installation time: ~10 minutes
+
 ## 🚀 Quick Start
 
 ### 1. Literature Agent Workflow
